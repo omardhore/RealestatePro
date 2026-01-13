@@ -4,18 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 
-// Deployment Setup Route (Run this once on Namecheap, then delete it)
-Route::get('/setup-production', function () {
-    try {
-        Artisan::call('storage:link');
-        Artisan::call('config:cache');
-        Artisan::call('route:cache');
-        Artisan::call('view:cache');
-        return "Setup successful! You can now delete this route from web.php";
-    } catch (\Exception $e) {
-        return "Error during setup: " . $e->getMessage();
-    }
-});
 
 Route::get('/', function () {
     return view('welcome');
