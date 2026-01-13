@@ -12,8 +12,8 @@ class SupabaseService
 
     public function __construct()
     {
-        $this->url = rtrim(env('SUPABASE_URL'), '/');
-        $this->key = env('SUPABASE_KEY');
+        $this->url = rtrim(config('supabase.url'), '/');
+        $this->key = config('supabase.key');
     }
 
     public function headers($token = null)
