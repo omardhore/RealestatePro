@@ -50,20 +50,9 @@ class AdminController extends Controller
         ]);
 
         if (!$authResponse->successful()) {
-            return back()->withErrors(['error' => 'Failed to create auth user: ' . ($authResponse->json()['msg'] ?? 'Unknown error')]);
-        }
-
-        $userData = $authResponse->json();
-        $userId = $userData['id'] ?? null;
-
-        if ($userId) {
-            // Supabase Auth trigger usually handles profile, but we'll ensure it exists with correct role
-            $token = session('supabase_access_token');
-            $this->supabase->from('profiles', $token)->insert([
-                'id' => $userId,
-                'full_name' => $request->full_name,
-                'role' => $request->role,
-            ]);
+            $error = $authResponse->json();
+            $message = $error['msg'] ?? $error['error_description'] ?? 'Unknown error';
+            return back()->withErrors(['error' => 'Failed to create user: ' . $message])->withInput();
         }
 
         return redirect()->route('admin.users')->with('success', 'User created successfully.');
